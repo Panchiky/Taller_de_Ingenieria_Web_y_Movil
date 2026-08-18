@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Taller 2: JS, Formularios y Web Storage</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      color: #333;
+      margin: 30px;
+    }
+
+    .contenedor {
+      max-width: 800px;
+      margin: auto;
+    }
+
+    .caja {
+      background: white;
+      border: 1px solid #ccc;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 8px;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 8px;
+      margin: 6px 0 12px;
+      box-sizing: border-box;
+    }
+
+    button {
+      background: #198754;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin: 4px;
+    }
+
+    button:hover {
+      background: #146c43;
+    }
+
+    .btn-secundario {
+      background: #0b5ed7;
+    }
+
+    .btn-peligro {
+      background: #dc3545;
+    }
+
+    .resultado {
+      margin-top: 10px;
+      padding: 10px;
+      background: #f8f9fa;
+      border-radius: 5px;
+      min-height: 20px;
+    }
+
+    .destacado {
+      color: #d63384;
+      font-weight: bold;
+    }
+
+    small {
+      color: #666;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="contenedor">
+    <h1>Taller 2: JS, Formularios, Web Storage (LocalStorage y SessionStorage)</h1>
+    <p>En este ejemplo veremos cómo JavaScript puede <span class="destacado">leer formularios</span> y guardar
+      información en el navegador.</p>
+
+    <div class="caja">
+      <h2>1. Formulario básico</h2>
+      <form id="formulario">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" required> <!-- required indica que el usuario debe si o si ingresar información-->
+        <label for="email">Correo:</label>
+        <input type="email" id="email" required>
+        <label for="carrera">Carrera:</label>
+        <select id="carrera">
+          <option value="ici">ICI</option>
+          <option value="inf">INF</option>
+          <option value="icd">ICD</option>
+        </select>
+        <button type="submit">Mostrar datos</button>
+      </form>
+      <div id="resultado-formulario" class="resultado"></div>
+    </div>
+
+    <div class="caja">
+      <h2>2. LocalStorage</h2>
+      <p>Los datos almacenados aquí <span class="destacado">permanecen después de cerrar el navegador.</span></p>
+      <button onclick="guardarLocal()">Guardar nombre</button>
+      <button class="btn-secundario" onclick="leerLocal()">Leer nombre</button>
+      <button class="btn-peligro" onclick="borrarLocal()">Borrar nombre</button>
+      <div id="resultado-local" class="resultado"></div>
+    </div>
+
+    <div class="caja">
+      <h2>3. SessionStorage</h2>
+      <p>Los datos almacenados aquí <span class="destacado">duran mientras exista la sesión de la pestaña.</span></p>
+      <button onclick="guardarSesion()">Guardar carrera</button>
+      <button class="btn-secundario" onclick="leerSesion()">Leer carrera</button>
+      <button class="btn-peligro" onclick="borrarSesion()">Borrar carrera</button>
+      <div id="resultado-sesion" class="resultado"></div>
+    </div>
+
+    <div class="caja">
+      <h2>4. Guardar un formulario completo</h2>
+      <p>En esta sección convertiremos los datos del formulario en un objeto y lo guardaremos usando JSON.</p>
+      <button onclick="guardarFormulario()">Guardar formulario</button>
+      <button class="btn-secundario" onclick="recuperarFormulario()">Recuperar formulario</button>
+      <button class="btn-peligro" onclick="limpiarFormularioGuardado()">Eliminar datos guardados</button>
+      <div id="resultado-guardado" class="resultado"></div>
+    </div>
+
+    <hr>
+    <div class="caja">
+      <h2>Conceptos importantes</h2>
+      <ul>
+        <li><code>document.getElementById()</code>: permite obtener un elemento HTML utilizando su Id.</li>
+        <li><code>.value</code>: permite leer el contenido de un campo.</li>
+        <li><code>localStorage.setItem()</code>: guarda un dato de forma persistente.</li>
+        <li><code>localStorage.getItem()</code>: recupera un dato almacenado previamente.</li>
+        <li><code>localStorage.removeItem()</code>: elimina un dato almacenado en LocalStorage.</li>
+        <li><code>sessionStorage</code>: funciona de forma similar a LocalStorage, pero está asociado a la sesión de la pestaña.</li>
+        <li><code>JSON.stringify()</code>: convierte un objeto JavaScript en texto.</li>
+        <li><code>JSON.parse()</code>: convierte texto JSON nuevamente en un objeto.</li>
+      </ul>
+    </div>
+
+    <div class="caja">
+      <h2>Ejercicios</h2>
+      <ol>
+        <li>Mover todo el código CSS y JavaScript a archivos independientes, style.css y script.js respectivamente</li>
+        <li>Agregar un campo <strong>edad</strong> al formulario y mostrarlo en el resultado.</li>
+        <li>Validar mediante JavaScript que la edad sea un número mayor que 0.</li>
+        <li>Modificar <code>guardarLocal()</code> para guardar también el email.</li>
+        <li>Guardar todo el contenido del formulario como un objeto JSON.</li>
+        <li>Actualizar la función que recupera los datos guardados y los deja nuevamente dentro de los campos del formulario.</li>
+        <hr>
+        <li><strong>Desafío:</strong> crear una pequeña agenda de contactos. Cada contacto debe tener nombre y correo.
+          Guardar todos los contactos en un arreglo dentro de <code>localStorage</code> y mostrarlos en una lista HTML.
+        </li>
+      </ol>
+    </div>
+
+    <div class="caja">
+      <h2>Preguntas para discutir</h2>
+      <ol>
+        <li>¿Qué diferencia observas entre <code>localStorage</code> y <code>sessionStorage</code>?</li>
+        <li>¿Por qué necesitamos <code>JSON.stringify()</code> y <code>JSON.parse()</code>?</li>
+        <li>¿Qué información no deberíamos guardar utilizando Web Storage?</li>
+      </ol>
+    </div>
+  </div>
+
+  <script>
+    // =====================================================
+    // Configuración del formulario y uso del evento "submit"
+    // =====================================================
+    document.getElementById("formulario").addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const nombre = document.getElementById("nombre").value;
+      const email = document.getElementById("email").value;
+      const carrera = document.getElementById("carrera").value;
+
+      document.getElementById("resultado-formulario").textContent =
+        "Nombre: " + nombre + " | Correo: " + email + " | Carrera: " + carrera;
+    });
+
+    // =====================================================
+    // 2. Utilizar LocalStorage para almacenar información
+    // =====================================================
+    function guardarLocal() {
+      const nombre = document.getElementById("nombre").value;
+
+      if (nombre === "") {
+        document.getElementById("resultado-local").textContent = "Primero escribe un nombre.";
+        return;
+      }
+
+      localStorage.setItem("nombreUsuario", nombre);
+      document.getElementById("resultado-local").textContent = "Nombre guardado correctamente.";
+    }
+
+    function leerLocal() {
+      const nombre = localStorage.getItem("nombreUsuario");
+
+      if (nombre === null) {
+        document.getElementById("resultado-local").textContent = "No hay ningún nombre guardado.";
+      } else {
+        document.getElementById("resultado-local").textContent = "Nombre guardado: " + nombre;
+      }
+    }
+
+    function borrarLocal() {
+      localStorage.removeItem("nombreUsuario");
+      document.getElementById("resultado-local").textContent = "Nombre eliminado.";
+    }
+
+    // =====================================================
+    // 3. Utilizar sessionStorage para almacenar información
+    // =====================================================
+    function guardarSesion() {
+      const carrera = document.getElementById("carrera").value;
+      sessionStorage.setItem("carreraSeleccionada", carrera);
+      document.getElementById("resultado-sesion").textContent = "Carrera guardada en la sesión.";
+    }
+
+    function leerSesion() {
+      const carrera = sessionStorage.getItem("carreraSeleccionada");
+
+      if (carrera === null) {
+        document.getElementById("resultado-sesion").textContent = "No hay ninguna carrera guardada.";
+      } else {
+        document.getElementById("resultado-sesion").textContent = "Carrera guardada: " + carrera;
+      }
+    }
+
+    function borrarSesion() {
+      sessionStorage.removeItem("carreraSeleccionada");
+      document.getElementById("resultado-sesion").textContent = "Carrera eliminada de la sesión.";
+    }
+
+    // =====================================================
+    // 4. Formulario + JSON
+    // =====================================================
+    function guardarFormulario() {
+      const datos = {
+        nombre: document.getElementById("nombre").value,
+        email: document.getElementById("email").value,
+        carrera: document.getElementById("carrera").value
+      };
+
+      localStorage.setItem("datosFormulario", JSON.stringify(datos));
+      document.getElementById("resultado-guardado").textContent = "Formulario guardado como objeto JSON.";
+    }
+
+    function recuperarFormulario() {
+      const datosGuardados = localStorage.getItem("datosFormulario");
+
+      if (datosGuardados === null) {
+        document.getElementById("resultado-guardado").textContent = "No existen datos guardados.";
+        return;
+      }
+
+      const datos = JSON.parse(datosGuardados);
+
+      document.getElementById("nombre").value = datos.nombre;
+      document.getElementById("email").value = datos.email;
+      document.getElementById("carrera").value = datos.carrera;
+
+      document.getElementById("resultado-guardado").textContent = "Datos recuperados y cargados en el formulario.";
+    }
+
+    function limpiarFormularioGuardado() {
+      localStorage.removeItem("datosFormulario");
+      document.getElementById("resultado-guardado").textContent = "Datos guardados eliminados.";
+    }
+  </script>
+</body>
+
+</html>
