@@ -5,12 +5,13 @@ document.getElementById("formulario").addEventListener("submit", function (event
   event.preventDefault();
 
   const nombre = document.getElementById("nombre").value;
+  const edad = document.getElementById("edad").value; // se agrego la configuracion de edad al formulario
   const email = document.getElementById("email").value;
   const carrera = document.getElementById("carrera").value;
 
   document.getElementById("resultado-formulario").textContent =
-    "Nombre: " + nombre + " | Correo: " + email + " | Carrera: " + carrera;
-});
+    "Nombre: " + nombre + " | Edad: " + edad + " | Correo: " + email + " | Carrera: " + carrera;
+}); // se agrego la edad al resultado
 
 // =====================================================
 // 2. Utilizar LocalStorage para almacenar información
