@@ -79,6 +79,7 @@ function borrarSesion() {
 function guardarFormulario() {
   const datos = {
     nombre: document.getElementById("nombre").value,
+    edad: document.getElementById("edad").value, // guardar el formulario com JSON
     email: document.getElementById("email").value,
     carrera: document.getElementById("carrera").value
   };
