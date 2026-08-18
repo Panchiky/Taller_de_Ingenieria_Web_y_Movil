@@ -6,6 +6,9 @@ document.getElementById("formulario").addEventListener("submit", function (event
 
   const nombre = document.getElementById("nombre").value;
   const edad = document.getElementById("edad").value; // se agrego la configuracion de edad al formulario
+  if (edad <= 0) {
+    document.getElementById("resultado-formulario").textContent = "La edad debe ser mayor que 0";
+  } // Validar que la edad se mayor que 0
   const email = document.getElementById("email").value;
   const carrera = document.getElementById("carrera").value;
 
