@@ -21,6 +21,7 @@ document.getElementById("formulario").addEventListener("submit", function (event
 // =====================================================
 function guardarLocal() {
   const nombre = document.getElementById("nombre").value;
+  const email = document.getElementById("email").value;
 
   if (nombre === "") {
     document.getElementById("resultado-local").textContent = "Primero escribe un nombre.";
@@ -28,16 +29,18 @@ function guardarLocal() {
   }
 
   localStorage.setItem("nombreUsuario", nombre);
+  localStorage.setItem("emailUsuario", email); //Guardar email en localStorage
   document.getElementById("resultado-local").textContent = "Nombre guardado correctamente.";
 }
 
 function leerLocal() {
   const nombre = localStorage.getItem("nombreUsuario");
+  const email = localStorage.getItem("emailUsuario")
 
   if (nombre === null) {
     document.getElementById("resultado-local").textContent = "No hay ningún nombre guardado.";
   } else {
-    document.getElementById("resultado-local").textContent = "Nombre guardado: " + nombre;
+    document.getElementById("resultado-local").textContent = "Nombre: " + nombre + " | Email: " + email; // actualizar leerLocal
   }
 }
 
