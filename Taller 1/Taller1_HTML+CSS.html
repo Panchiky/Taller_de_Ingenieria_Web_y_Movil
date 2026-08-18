@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>HTML + CSS</title>
+
+<!-- La etiqueta <style> se utiliza para especificar el estilo css directamente en nuestra página -->
+<!-- También podemos importar un archivo css utilizando por ejemplo <link rel="stylesheet" src="style.css"> -->
+  
+<style>
+body{
+  font-family: Arial, sans-serif;
+  background:#f4f4f4;
+  color:#333;
+  margin:30px;
+}
+
+h1{color:#0b5ed7;border-bottom:2px solid #0b5ed7;}
+
+h2{color:#198754;}
+
+.caja{
+  background:white;
+  border:1px solid #ccc;
+  padding:15px;
+  margin:15px 0;
+  border-radius:8px;
+}
+
+.destacado{color:#d63384;font-weight:bold;}
+
+table{border-collapse:collapse;width:60%;}
+
+th,td{border:1px solid #999;padding:8px;}
+th{background:#0b5ed7;color:white;}
+
+button{
+ background:#198754;color:white;border:none;
+ padding:10px 16px;border-radius:5px;
+}
+button:hover{background:#146c43;}
+</style>
+
+</head>
+
+<body>
+<h1>Primeros pasos con HTML y CSS</h1>
+<p>HTML crea la estructura y <span class="destacado">CSS mejora la apariencia</span>.</p>
+
+<div class="caja">
+<h2>Encabezados</h2>
+<h3>Este contenido está dentro de una caja.</h3>
+<p>Las clases permiten reutilizar estilos.</p>
+</div>
+
+<h2>Lista</h2>
+<ul>
+  <li>Item 1</li>
+  <li>Item 2</li>
+  <li>Item 3</li>
+</ul>
+
+<h2>Tabla</h2>
+<table>
+  <tr>
+    <th>Tecnología</th>
+    <th>Uso</th></tr>
+  <tr>
+    <td>HTML</td>
+    <td>Estructura</td>
+  </tr>
+  <tr>
+    <td>CSS</td>
+    <td>Diseño</td>
+  </tr>
+</table>
+
+<h2>Formulario</h2>
+<form>
+  <label>Nombre:</label><br>
+  <input type="text"><br><br>
+  <button>Enviar</button>
+</form>
+
+<hr>
+<h2>Ejercicios</h2>
+<ol>
+  <li>Cambiar el color del fondo.</li>
+  <li>Modificar el color del título.</li>
+  <li>Agregar un borde distinto a la tabla.</li>
+  <li>Cambiar el estilo del botón.</li>
+  <li>Jugar con el CSS :)</li>
+</ol>
+
+</body>
+</html>

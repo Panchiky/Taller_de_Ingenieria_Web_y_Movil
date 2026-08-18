@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>HTML + CSS + JavaScript</title>
+
+<!-- La etiqueta <style> se utiliza para especificar el estilo css directamente en nuestra página -->
+<!-- También podemos importar un archivo css utilizando por ejemplo <link rel="stylesheet" src="style.css"> -->
+
+<style>
+body{
+  font-family: Arial, sans-serif;
+  background:#f4f4f4;
+  color:#333;
+  margin:30px;
+}
+
+h1{color:#0b5ed7;border-bottom:2px solid #0b5ed7;}
+
+h2{color:#198754;}
+
+.caja{
+  background:white;
+  border:1px solid #ccc;
+  padding:15px;
+  margin:15px 0;
+  border-radius:8px;
+}
+
+.destacado{color:#d63384;font-weight:bold;}
+
+table{border-collapse:collapse;width:60%;}
+
+th,td{border:1px solid #999;padding:8px;}
+th{background:#0b5ed7;color:white;}
+
+button{
+ background:#198754;color:white;border:none;
+ padding:10px 16px;border-radius:5px;
+ cursor:pointer;
+}
+button:hover{background:#146c43;}
+
+#contador-valor{
+  font-size:24px;
+  font-weight:bold;
+  color:#0b5ed7;
+}
+
+#saludo-resultado{
+  margin-top:10px;
+  font-weight:bold;
+  color:#d63384;
+}
+
+.oculto{display:none;}
+</style>
+
+</head>
+
+<body>
+<h1>Primeros pasos con HTML, CSS y JavaScript</h1>
+<p>HTML crea la estructura, <span class="destacado">CSS mejora la apariencia</span> y JavaScript agrega interactividad.</p>
+
+<div class="caja">
+<h2>Encabezados</h2>
+<h3>Este contenido está dentro de una caja.</h3>
+<p>Las clases permiten reutilizar estilos.</p>
+</div>
+
+<h2>Lista</h2>
+<ul>
+  <li>Item 1</li>
+  <li>Item 2</li>
+  <li>Item 3</li>
+</ul>
+
+<h2>Tabla</h2>
+<table>
+  <tr>
+    <th>Tecnología</th>
+    <th>Uso</th></tr>
+  <tr>
+    <td>HTML</td>
+    <td>Estructura</td>
+  </tr>
+  <tr>
+    <td>CSS</td>
+    <td>Diseño</td>
+  </tr>
+  <tr>
+    <td>JavaScript</td>
+    <td>Interactividad</td>
+  </tr>
+</table>
+
+<h2>Formulario</h2>
+<form onsubmit="return false;">
+  <label for="nombre-input">Nombre:</label><br>
+  <input type="text" id="nombre-input"><br><br>
+  <button onclick="saludar()">Enviar</button>
+  <p id="saludo-resultado"></p>
+</form>
+
+<hr>
+
+<h2>JavaScript: lo básico</h2>
+
+<div class="caja">
+<h3>1. Variables</h3>
+<p>En JavaScript guardamos datos en <span class="destacado">variables</span> usando <code>let</code> o <code>const</code>.</p>
+<pre>let nombre = "Ana";
+const edad = 20;</pre>
+</div>
+
+<div class="caja">
+<h3>2. Funciones</h3>
+<p>Una <span class="destacado">función</span> agrupa código que se puede reutilizar. Aquí abajo hay un ejemplo funcionando: escribe tu nombre en el formulario de arriba y presiona "Enviar".</p>
+<pre>function saludar() {
+  let nombre = document.getElementById("nombre-input").value;
+  document.getElementById("saludo-resultado").textContent = "¡Hola, " + nombre + "!";
+}</pre>
+</div>
+
+<div class="caja">
+<h3>3. Eventos</h3>
+<p>Los <span class="destacado">eventos</span> permiten reaccionar a las acciones del usuario, como un clic. Prueba el contador:</p>
+<p id="contador-valor">0</p>
+<button onclick="sumarUno()">+1</button>
+<button onclick="reiniciarContador()">Reiniciar</button>
+</div>
+
+<div class="caja">
+<h3>4. Condicionales</h3>
+<p>Con <span class="destacado">if / else</span> el programa toma decisiones. Prueba el botón:</p>
+<button onclick="verificarPar()">¿El contador es par o impar?</button>
+<p id="resultado-par"></p>
+</div>
+
+<hr>
+<h2>Ejercicios</h2>
+<ol>
+  <li>Crear una nueva función en JavaScript que reste 1 al contador.</li>
+  <li>Modificar la función <code>saludar()</code> para que también muestre la edad.</li>
+</ol>
+
+<script>
+// 1. Variables: aquí guardamos el valor actual del contador
+let contador = 0;
+
+// 2. y 3. Funciones + eventos: se ejecutan cuando el usuario hace clic en un botón
+function saludar() {
+  let nombre = document.getElementById("nombre-input").value;
+  if (nombre === "") {
+    document.getElementById("saludo-resultado").textContent = "Por favor escribe tu nombre.";
+    return;
+  }
+  document.getElementById("saludo-resultado").textContent = "¡Hola, " + nombre + "!";
+}
+
+function sumarUno() {
+  contador = contador + 1;
+  document.getElementById("contador-valor").textContent = contador;
+}
+
+function reiniciarContador() {
+  contador = 0;
+  document.getElementById("contador-valor").textContent = contador;
+  document.getElementById("resultado-par").textContent = "";
+}
+
+// 4. Condicionales
+function verificarPar() {
+  if (contador % 2 === 0) {
+    document.getElementById("resultado-par").textContent = contador + " es un número par.";
+  } else {
+    document.getElementById("resultado-par").textContent = contador + " es un número impar.";
+  }
+}
+</script>
+
+</body>
+</html>
