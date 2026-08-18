@@ -99,6 +99,7 @@ function recuperarFormulario() {
   const datos = JSON.parse(datosGuardados);
 
   document.getElementById("nombre").value = datos.nombre;
+  document.getElementById("edad").value = datos.edad; // recuperar el formulario
   document.getElementById("email").value = datos.email;
   document.getElementById("carrera").value = datos.carrera;
 
