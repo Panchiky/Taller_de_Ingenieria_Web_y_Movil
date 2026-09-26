@@ -5,16 +5,16 @@ document.getElementById("formulario").addEventListener("submit", function (event
   event.preventDefault();
 
   const nombre = document.getElementById("nombre").value;
-  const edad = document.getElementById("edad").value; // se agrego la configuracion de edad al formulario
+  const edad = Number(document.getElementById("edad").value); 
   if (edad <= 0) {
     document.getElementById("resultado-formulario").textContent = "La edad debe ser mayor que 0";
-  } // Validar que la edad se mayor que 0
+  }
   const email = document.getElementById("email").value;
   const carrera = document.getElementById("carrera").value;
 
   document.getElementById("resultado-formulario").textContent =
     "Nombre: " + nombre + " | Edad: " + edad + " | Correo: " + email + " | Carrera: " + carrera;
-}); // se agrego la edad al resultado
+}); 
 
 // =====================================================
 // 2. Utilizar LocalStorage para almacenar información
@@ -29,7 +29,8 @@ function guardarLocal() {
   }
 
   localStorage.setItem("nombreUsuario", nombre);
-  localStorage.setItem("emailUsuario", email); //Guardar email en localStorage
+  localStorage.setItem("emailUsuario", email); 
+
   document.getElementById("resultado-local").textContent = "Nombre guardado correctamente.";
 }
 
@@ -40,7 +41,7 @@ function leerLocal() {
   if (nombre === null) {
     document.getElementById("resultado-local").textContent = "No hay ningún nombre guardado.";
   } else {
-    document.getElementById("resultado-local").textContent = "Nombre: " + nombre + " | Email: " + email; // actualizar leerLocal
+    document.getElementById("resultado-local").textContent = "Nombre: " + nombre + " | Email: " + email;
   }
 }
 
@@ -79,7 +80,7 @@ function borrarSesion() {
 function guardarFormulario() {
   const datos = {
     nombre: document.getElementById("nombre").value,
-    edad: document.getElementById("edad").value, // guardar el formulario com JSON
+    edad: document.getElementById("edad").value, 
     email: document.getElementById("email").value,
     carrera: document.getElementById("carrera").value
   };
@@ -110,3 +111,56 @@ function limpiarFormularioGuardado() {
   localStorage.removeItem("datosFormulario");
   document.getElementById("resultado-guardado").textContent = "Datos guardados eliminados.";
 }
+
+// =====================================================
+// Desafío: Agenda de Contactos
+// =====================================================
+
+document.getElementById("form-agenda").addEventListener("submit", function (event) {
+  event.preventDefault();
+  const nombreContacto = document.getElementById("nombre-contacto").value;
+  const emailContacto = document.getElementById("email-contacto").value;
+
+  const nuevoContacto = {
+    nombre: nombreContacto,
+    email: emailContacto
+  };
+
+  const datosGuardados = localStorage.getItem("agendaContactos");
+  let agenda = []; 
+
+  if (datosGuardados !== null) {
+    agenda = JSON.parse(datosGuardados);
+  }
+
+  agenda.push(nuevoContacto);
+  localStorage.setItem("agendaContactos", JSON.stringify(agenda));
+  document.getElementById("nombre-contacto").value = "";
+  document.getElementById("email-contacto").value = "";
+  mostrarContactos();
+});
+
+function mostrarContactos() {
+  const listaHTML = document.getElementById("lista-contactos");
+  listaHTML.innerHTML = ""; 
+  const datosGuardados = localStorage.getItem("agendaContactos");
+  
+  if (datosGuardados !== null) {
+    const agenda = JSON.parse(datosGuardados);
+
+    for (let i = 0; i < agenda.length; i++) {
+      const contacto = agenda[i];
+      const elementoLi = document.createElement("li");
+      
+      elementoLi.textContent = "Nombre: " + contacto.nombre + " | Correo: " + contacto.email;
+      listaHTML.appendChild(elementoLi);
+    }
+  }
+}
+
+function limpiarAgenda() {
+  localStorage.removeItem("agendaContactos");
+  mostrarContactos(); 
+}
+
+mostrarContactos();
