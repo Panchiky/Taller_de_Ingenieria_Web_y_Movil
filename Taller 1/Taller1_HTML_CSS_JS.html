@@ -98,6 +98,8 @@ button:hover{background:#146c43;}
 <form onsubmit="return false;">
   <label for="nombre-input">Nombre:</label><br>
   <input type="text" id="nombre-input"><br><br>
+  <label for="edad-input">Edad:</label><br>
+  <input type="number" id="edad-input"><br><br>
   <button onclick="saludar()">Enviar</button>
   <p id="saludo-resultado"></p>
 </form>
@@ -127,6 +129,7 @@ const edad = 20;</pre>
 <p>Los <span class="destacado">eventos</span> permiten reaccionar a las acciones del usuario, como un clic. Prueba el contador:</p>
 <p id="contador-valor">0</p>
 <button onclick="sumarUno()">+1</button>
+<button onclick="restarUno()">-1</button>
 <button onclick="reiniciarContador()">Reiniciar</button>
 </div>
 
@@ -151,15 +154,21 @@ let contador = 0;
 // 2. y 3. Funciones + eventos: se ejecutan cuando el usuario hace clic en un botón
 function saludar() {
   let nombre = document.getElementById("nombre-input").value;
-  if (nombre === "") {
-    document.getElementById("saludo-resultado").textContent = "Por favor escribe tu nombre.";
+  let edad = document.getElementById("edad-input").value;
+  if (nombre === "" || edad === "") {
+    document.getElementById("saludo-resultado").textContent = "Por favor escribe tu nombre y edad.";
     return;
   }
-  document.getElementById("saludo-resultado").textContent = "¡Hola, " + nombre + "!";
+  document.getElementById("saludo-resultado").textContent = "¡Hola, " + nombre + "! Tienes " + edad + " años.";
 }
 
 function sumarUno() {
   contador = contador + 1;
+  document.getElementById("contador-valor").textContent = contador;
+}
+
+function restarUno() {
+  contador = contador - 1;
   document.getElementById("contador-valor").textContent = contador;
 }
 
