@@ -1,14 +1,9 @@
 // Taller 6: Node.js + Express (Backend)
 // Sigue los pasos del README y completa cada sección marcada con un número en forma secuencial (1,2,3...)
 
-// 1: Importar Express.
-const express = require("express");
-
-// 2: Crear la aplicación de Express.
-const app = express();
-
-// 9: Permitir que Express entienda los datos en formato JSON que llegan en el cuerpo (body) de las peticiones.
-app.use(express.json());
+const express = require("express"); // Importar express
+const app = express(); // Crear una instancia de express
+app.use(express.json()); // Permitir que Express entienda los datos en formato JSON
 
 // Datos de ejemplo. Tienen la misma estructura que las publicaciones de la API JSONPlaceholder.
 let posts = [
@@ -44,18 +39,15 @@ let posts = [
   }
 ];
 
-// 3: Crear la ruta GET "/" que responda con un mensaje de bienvenida utilizando res.send().
+// Crear la rutas GET
 app.get("/", (req, res) => {
   res.send("¡Hola desde mi servidor Pogo jeje!");
 });
-// 5: Crear la ruta GET "/saludo/:nombre" que responda con un saludo personalizado.
+
 app.get("/saludo/:nombre", (req, res) => {
   res.send(`¡Hola ${req.params.nombre}!`);
 });
 
-// 6: Crear la ruta GET "/api/posts" que responda con todas las publicaciones utilizando res.json().
-// 8 (vuelve a esta ruta en el paso 8): Si la URL incluye ?userId=..., responder solo con las publicaciones de ese usuario.
-// Pista: req.query.userId (recuerda convertirlo a número)
 app.get("/api/posts", (req, res) => {
   const userId = req.query.userId;
   if (userId) {
@@ -65,8 +57,6 @@ app.get("/api/posts", (req, res) => {
   res.json(posts);
 });
 
-
-// 7: Crear la ruta GET "/api/posts/:id" que responda con UNA publicación.
 app.get("/api/posts/:id", (req, res) => {
   const id = Number(req.params.id);
   const post = posts.find((p) => p.id === id);
@@ -78,7 +68,7 @@ app.get("/api/posts/:id", (req, res) => {
   }
 });
 
-// 10: Crear la ruta POST "/api/posts" que agregue una nueva publicación.
+// Crear la ruta POST
 app.post("/api/posts", (req, res) => {
   const datos = req.body;
   if (!datos || !datos.title || !datos.body){
@@ -94,13 +84,12 @@ app.post("/api/posts", (req, res) => {
   res.status(201).json(nuevoPost);
 });
 
-// 11: Responder con el código 404 cuando la ruta no exista.
-// Importante: Esto debe ir DESPUÉS de todas las rutas definidas.
+// Codigo para manejar rutas no encontradas (404)
 app.use((req, res) => {
   res.status(404).json({ error: "Ruta no encontrada" });
 });
 
-// 4: Levantar el servidor en el puerto 3000.
+// Levantamos el servidor en el puerto 3000
 const PORT = 3000;
 app.listen(PORT, () => {
   console.log(`Servidor ejecutándose en http://localhost:${PORT}`);
