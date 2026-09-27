@@ -25,6 +25,7 @@ boton.addEventListener("click", function() {
                 articulo.appendChild(cuerpo);
             
                 listaPosts.appendChild(articulo);
+                estado.textContent = "Publicaciones cargadas correctamente.";
             }); 
         
         })
