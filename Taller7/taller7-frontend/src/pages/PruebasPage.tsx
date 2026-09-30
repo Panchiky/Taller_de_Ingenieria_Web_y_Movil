@@ -16,7 +16,7 @@ import "./PruebasPage.css";
 // Esta página ya está lista: no necesitas modificarla.
 // Las URL de cada petición se completan en src/services/api.ts
 
-type Metodo = "GET" | "POST";
+type Metodo = "GET" | "POST" | "DELETE";
 
 interface Prueba {
   id: number;
@@ -50,7 +50,8 @@ const pruebas: Prueba[] = [
   { id: 6, nombre: "Publicaciones de un usuario", metodo: "GET", ruta: "/api/posts?userId=2", esperado: 200, enviar: api.obtenerPublicacionesDeUsuario },
   { id: 7, nombre: "Crear publicación", metodo: "POST", ruta: "/api/posts", esperado: 201, enviar: api.crearPublicacion },
   { id: 8, nombre: "Crear publicación sin título", metodo: "POST", ruta: "/api/posts", esperado: 400, enviar: api.crearPublicacionSinTitulo },
-  { id: 9, nombre: "Ruta inexistente", metodo: "GET", ruta: "/no-existe", esperado: 404, enviar: api.obtenerRutaInexistente }
+  { id: 9, nombre: "Ruta inexistente", metodo: "GET", ruta: "/no-existe", esperado: 404, enviar: api.obtenerRutaInexistente },
+  { id: 10, nombre: "Eliminar publicación", metodo: "DELETE", ruta: "/api/posts/1", esperado: 200, enviar: api.eliminarPublicacion }
 ];
 
 // Muestra el JSON con sangría; si la respuesta no es JSON, la deja como texto.

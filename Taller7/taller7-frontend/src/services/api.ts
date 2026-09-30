@@ -4,7 +4,7 @@
 // El resto del código (método, headers y body) ya está listo.
 
 // 1: Escribe la dirección de tu servidor Express (la misma que usabas en Postman).
-export const API_URL = "http://localhost:3000";
+export const API_URL = "/servidor";
 
 // 2: GET «Mensaje de bienvenida»
 // Pista: fetch(`${API_URL}/`)
@@ -51,6 +51,11 @@ export const crearPublicacionSinTitulo = () =>
     body: JSON.stringify({
       body: "A esta publicación le falta el título"
     })
+  });
+
+export const eliminarPublicacion = () =>
+  fetch(`${API_URL}/api/posts/1`, {
+    method: "DELETE"
   });
 
 // 10: GET «Ruta inexistente»

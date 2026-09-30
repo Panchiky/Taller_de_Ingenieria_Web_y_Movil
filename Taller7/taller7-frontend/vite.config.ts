@@ -10,6 +10,15 @@ export default defineConfig({
     react(),
     legacy()
   ],
+  server: {
+    proxy: {
+      "/servidor": {
+        target: "http://localhost:3000",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/servidor/, "")
+      }
+    }
+  },
   test: {
     globals: true,
     environment: 'jsdom',

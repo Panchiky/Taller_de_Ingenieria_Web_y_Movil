@@ -3,7 +3,7 @@ const cors = require("cors");
 
 const app = express();
 
-//app.use(cors());
+app.use(cors());
 app.use(express.json());
 app.use((req, res, next) => {
   console.log("Llegó:", req.method, req.url);
@@ -60,9 +60,22 @@ app.post("/api/posts", (req, res) => {
   res.status(201).json(nuevoPost);
 });
 
+//Desafio: Implementar la ruta DELETE para eliminar una publicación por su ID
+app.delete("/api/posts/:id", (req, res) => {
+  const id = Number(req.params.id);
+  const index = posts.findIndex((p) => p.id === id);
+  if (index !== -1) {
+    posts.splice(index, 1);
+    res.status(200).json({ message: "Publicación eliminada correctamente"});
+  } else {
+    res.status(404).json({ error: "Publicación no encontrada" });
+  }
+});
+
 app.use((req, res) => {
   res.status(404).json({ error: "Ruta no encontrada" });
 });
+
 
 
 const PORT = 3000;
