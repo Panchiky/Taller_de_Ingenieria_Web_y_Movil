@@ -5,20 +5,23 @@
 const express = require("express");
 const cors = require("cors");
 // 3: Importar morgan.
-
+const morgan = require("morgan");
 const app = express();
+const postsRouter = require("./routes/posts");
 
 // 3: Registrar morgan para mostrar cada petición en la terminal (debe ser el primer middleware).
+app.use(morgan("tiny"));
 app.use(cors());
 app.use(express.json());
+app.use("/api/posts", postsRouter);
 
-let posts = [
+/*let posts = [
   { userId: 1, id: 1, title: "Bienvenidos al Taller 8", body: "En este taller completaremos las operaciones CRUD de nuestra API y construiremos una aplicación con Ionic que las utilice." },
   { userId: 1, id: 2, title: "¿Qué es un backend?", body: "Es la parte de la aplicación que se ejecuta en el servidor y responde a las peticiones de los clientes." },
   { userId: 2, id: 3, title: "Métodos HTTP", body: "GET permite obtener datos, POST crear, PUT actualizar y DELETE eliminar." },
   { userId: 2, id: 4, title: "Formato JSON", body: "Los clientes y el servidor se comunican enviando y recibiendo datos en formato JSON." },
   { userId: 3, id: 5, title: "Postman", body: "Postman es una herramienta que permite enviar peticiones HTTP y revisar las respuestas del servidor." }
-];
+];*/
 
 app.get("/", (req, res) => {
   res.send("¡Hola desde mi primer servidor con Express!");
@@ -28,7 +31,7 @@ app.get("/saludo/:nombre", (req, res) => {
   res.send(`¡Hola, ${req.params.nombre}!`);
 });
 
-app.get("/api/posts", (req, res) => {
+/*app.get("/api/posts", (req, res) => {
   const userId = req.query.userId;
   if (userId) {
     const filtrados = posts.filter((p) => p.userId === Number(userId));
@@ -63,15 +66,59 @@ app.post("/api/posts", (req, res) => {
 });
 
 // 1: Crear la ruta DELETE "/api/posts/:id" que elimine una publicación.
+app.delete("/api/posts/:id", (req, res) => {
+  const id = Number(req.params.id);
+  const existe = posts.some((p) => p.id === id);
 
-// 2: Crear la ruta PUT "/api/posts/:id" que reemplace una publicación.
+  if(!existe) {
+    return res.status(404).json({ error: "Publicación no encontrada" });
+  }
 
-// 4: Convertir este middleware en una función con nombre: endpointDesconocido.
-app.use((req, res) => {
-  res.status(404).json({ error: "Ruta no encontrada" });
+  posts = posts.filter((p) => p.id !== id);
+  res.status(204).end();
 });
 
+// 2: Crear la ruta PUT "/api/posts/:id" que reemplace una publicación.
+app.put("/api/posts/:id", (req, res) => {
+  const id = Number(req.params.id);
+  const post = posts.find((p) => p.id === id);
+
+  if (!post) {
+    return res.status(404).json({ error: "Publicación no encontrada" });
+  }
+
+  const datos = req.body;
+  if (!datos || !datos.title || !datos.body) {
+    return res.status(400).json({ error: "Debes enviar title y body" });
+  }
+
+  const actualizado = {
+    userId: datos.userId || post.userId,
+    id: post.id,
+    title: datos.title,
+    body: datos.body    
+  };
+
+  posts = posts.map((p) => (p.id === id ? actualizado : p));
+  res.json(actualizado);
+});*/
+
+// 4: Convertir este middleware en una función con nombre: endpointDesconocido.
+const endpointDesconocido = (req, res) => {
+  res.status(404).json({ error: "Ruta no encontrada" });
+};
+app.use(endpointDesconocido);
+
 // 5: Crear el middleware que maneja los errores (debe recibir 4 parámetros).
+const manejadorErrores = (error, req, res, next) => {
+  console.error(error.message);
+  
+  if(error.type === "entity.parse.failed") {
+    return res.status(400).json({ error: "El cuerpo de la petición no es un JSON válido" });
+  }
+  res.status(500).json({ error: "Error interno del servidor" });
+};
+app.use(manejadorErrores);
 
 const PORT = 3000;
 app.listen(PORT, () => {

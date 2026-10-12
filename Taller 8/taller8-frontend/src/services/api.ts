@@ -43,7 +43,8 @@ const procesarRespuesta = async (response: Response) => {
 // GET /api/posts
 // 7: Si se recibe userId, agrega el parámetro de consulta a la URL (por ejemplo, ?userId=2).
 export const obtenerPublicaciones = async (userId?: number): Promise<Publicacion[]> => {
-  const response = await fetch(`${API_URL}/api/posts`);
+  const url = userId ? `${API_URL}/api/posts?userId=${userId}` : `${API_URL}/api/posts`;
+  const response = await fetch(url);
   return procesarRespuesta(response);
 };
 
@@ -60,11 +61,17 @@ export const crearPublicacion = async (datos: DatosPublicacion): Promise<Publica
 // 8: PUT /api/posts/:id
 // Pista: es muy parecida a crearPublicacion, pero cambian el método y la URL.
 export const actualizarPublicacion = async (id: number, datos: DatosPublicacion): Promise<Publicacion> => {
-  throw new Error("Paso 8 pendiente: completa actualizarPublicacion en src/services/api.ts");
+  const response = await fetch(`${API_URL}/api/posts/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(datos)
+  });
+  return procesarRespuesta(response);
 };
 
 // 9: DELETE /api/posts/:id
 // Pista: no necesita headers ni body.
 export const eliminarPublicacion = async (id: number): Promise<void> => {
-  throw new Error("Paso 9 pendiente: completa eliminarPublicacion en src/services/api.ts");
+  const response = await fetch(`${API_URL}/api/posts/${id}`, { method: "DELETE" });
+  await procesarRespuesta(response);
 };
