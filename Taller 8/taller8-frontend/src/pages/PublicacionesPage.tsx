@@ -51,6 +51,7 @@ const PublicacionesPage: React.FC = () => {
   const [modalAbierto, setModalAbierto] = useState(false);
   const [enEdicion, setEnEdicion] = useState<Publicacion | null>(null);
   const [guardando, setGuardando] = useState(false);
+  const [publicacionEliminando, setPublicacionEliminando] = useState<Publicacion | null>(null);
   const lista = useRef<HTMLIonListElement>(null);
 
   const [presentarToast] = useIonToast();
@@ -125,8 +126,34 @@ const PublicacionesPage: React.FC = () => {
           role: "destructive",
           handler: async () => {
             try {
+              const publicacionABorrar = publicacion;
+              
               await eliminarPublicacion(publicacion.id);
-              mostrarMensaje("Publicación eliminada", "success");
+              setPublicacionEliminando(publicacionABorrar); 
+      
+              presentarToast({
+                message: "Publicación eliminada",
+                color: "success",
+                duration: 5000,
+                position: "bottom",
+                buttons: [
+                  {
+                    text: "Deshacer",
+                    handler: async () => {
+                      try {
+                        const { id, ...datosSinId } = publicacionABorrar;
+                        await crearPublicacion(datosSinId);
+                        setPublicacionEliminando(null);
+                        await cargar();
+                        mostrarMensaje("Publicación recuperada", "success");
+                      } catch (error) {
+                        mostrarMensaje(mensajeDeError(error), "danger");
+                      }
+                    }
+                  }
+                ]
+              });
+
               setModalAbierto(false);
               await cargar();
             } catch (error) {
@@ -138,7 +165,7 @@ const PublicacionesPage: React.FC = () => {
       onDidDismiss: () => lista.current?.closeSlidingItems()
     });
   };
-
+  
   // Si el paso 7 no está completo, el servidor devuelve todas las publicaciones.
   const filtroSinAplicar =
     filtro !== "todas" && publicaciones.some((p) => p.userId !== Number(filtro));

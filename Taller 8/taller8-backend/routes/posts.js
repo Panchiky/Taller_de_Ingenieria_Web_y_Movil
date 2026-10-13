@@ -81,4 +81,26 @@ router.put("/:id", (req, res) => {
   res.json(actualizado);
 });
 
+// Crear la ruta PATCH "/api/posts/:id" que actualice parcialmente una publicación.
+// PATCH actualiza unicamente el campo enviado manteniendo lo demas intacto, mientras que PUT reemplaza todo el recurso y borra los campos omitidos.
+router.patch('/:id', (req, res) => {
+  const id = Number(req.params.id);
+  const post = posts.find(p => p.id === id);
+
+  if (!post) {
+    return res.status(404).json({ error: 'Publicación no encontrada' });
+  }
+
+  const { title, body } = req.body;
+
+  if (title === undefined && body === undefined) {
+    return res.status(400).json({ error: 'Debes enviar al menos un campo para actualizar' });
+  }
+
+  if (title !== undefined) post.title = title;
+  if (body !== undefined) post.body = body;
+
+  res.json(post);
+});
+
 module.exports = router;
