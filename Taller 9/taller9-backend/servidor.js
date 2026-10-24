@@ -3,14 +3,19 @@
 // y completa cada sección marcada con un número.
 
 // 1: Verificar que exista la variable de entorno JWT_SECRET.
+if (!process.env.JWT_SECRET) {
+  console.error("Falta la variable de entorno JWT_SECRET. Revisa el archivo .env");
+  process.exit(1);
+}
 
 const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
 const postsRouter = require("./routes/posts");
 // 3: Importar el router de usuarios.
+const usuariosRouer = require("./routes/usuarios");
 // 4: Importar el router de login.
-
+const loginRouter = require("./routes/login");
 const app = express();
 
 app.use(morgan("tiny"));
@@ -27,7 +32,9 @@ app.get("/saludo/:nombre", (req, res) => {
 
 app.use("/api/posts", postsRouter);
 // 3: Montar el router de usuarios en "/api/usuarios".
+app.use("/api/usuarios", usuariosRouer);
 // 4: Montar el router de login en "/api/login".
+app.use("/api/login", loginRouter);
 
 const endpointDesconocido = (req, res) => {
   res.status(404).json({ error: "Ruta no encontrada" });
@@ -43,7 +50,13 @@ const manejadorErrores = (error, req, res, next) => {
   }
 
   // 6: Responder 401 cuando el token no es válido o expiró.
+    if (error.name === "TokenExpiredError") {
+    return res.status(401).json({ error: "Token expirado" });
+  }
 
+  if (error.name === "JsonWebTokenError") {
+    return res.status(401).json({ error: "Token inválido" });
+  }
   res.status(500).json({ error: "Error interno del servidor" });
 };
 

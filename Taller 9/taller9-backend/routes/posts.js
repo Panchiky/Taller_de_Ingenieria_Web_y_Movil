@@ -3,7 +3,7 @@
 
 const express = require("express");
 // 7: Importar el middleware verificarToken.
-
+const verificarToken = require("../middleware/auth");
 const router = express.Router();
 
 let posts = [
@@ -34,13 +34,13 @@ router.get("/:id", (req, res) => {
 });
 
 // 7: Proteger esta ruta y tomar el userId desde el token.
-router.post("/", (req, res) => {
+router.post("/", verificarToken, (req, res) => {
   const datos = req.body;
   if (!datos || !datos.title || !datos.body) {
     return res.status(400).json({ error: "Debes enviar title y body" });
   }
   const nuevoPost = {
-    userId: datos.userId || 1,
+    userId: req.usuario.id,
     id: posts.length > 0 ? Math.max(...posts.map((p) => p.id)) + 1 : 1,
     title: datos.title,
     body: datos.body
@@ -50,29 +50,35 @@ router.post("/", (req, res) => {
 });
 
 // 7: Proteger esta ruta y permitir eliminar solo al autor (403).
-router.delete("/:id", (req, res) => {
+router.delete("/:id", verificarToken, (req, res) => {
   const id = Number(req.params.id);
-  const existe = posts.some((p) => p.id === id);
-  if (!existe) {
+  const post = posts.find((p) => p.id === id);
+  if (!post) {
     return res.status(404).json({ error: "Publicación no encontrada" });
+  }
+  if (post.userId !== req.usuario.id) {
+    return res.status(403).json({ error: "Solo el autor puede modificar esta publicación" });
   }
   posts = posts.filter((p) => p.id !== id);
   res.status(204).end();
 });
 
 // 7: Proteger esta ruta y permitir editar solo al autor (403).
-router.put("/:id", (req, res) => {
+router.put("/:id", verificarToken, (req, res) => {
   const id = Number(req.params.id);
   const post = posts.find((p) => p.id === id);
   if (!post) {
     return res.status(404).json({ error: "Publicación no encontrada" });
+  }
+  if (post.userId !== req.usuario.id) {
+    return res.status(403).json({ error: "Solo el autor puede modificar esta publicación" });
   }
   const datos = req.body;
   if (!datos || !datos.title || !datos.body) {
     return res.status(400).json({ error: "Debes enviar title y body" });
   }
   const actualizado = {
-    userId: datos.userId || post.userId,
+    userId: post.userId,
     id: post.id,
     title: datos.title,
     body: datos.body
