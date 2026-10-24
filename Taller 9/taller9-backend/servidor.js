@@ -13,7 +13,7 @@ const cors = require("cors");
 const morgan = require("morgan");
 const postsRouter = require("./routes/posts");
 // 3: Importar el router de usuarios.
-const usuariosRouer = require("./routes/usuarios");
+const usuariosRouter = require("./routes/usuarios");
 // 4: Importar el router de login.
 const loginRouter = require("./routes/login");
 const app = express();
@@ -32,7 +32,7 @@ app.get("/saludo/:nombre", (req, res) => {
 
 app.use("/api/posts", postsRouter);
 // 3: Montar el router de usuarios en "/api/usuarios".
-app.use("/api/usuarios", usuariosRouer);
+app.use("/api/usuarios", usuariosRouter);
 // 4: Montar el router de login en "/api/login".
 app.use("/api/login", loginRouter);
 
@@ -50,7 +50,7 @@ const manejadorErrores = (error, req, res, next) => {
   }
 
   // 6: Responder 401 cuando el token no es válido o expiró.
-    if (error.name === "TokenExpiredError") {
+  if (error.name === "TokenExpiredError") {
     return res.status(401).json({ error: "Token expirado" });
   }
 
