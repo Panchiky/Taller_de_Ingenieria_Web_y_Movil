@@ -61,6 +61,16 @@ export const iniciarSesion = async (username: string, password: string): Promise
   return procesarRespuesta(response);
 };
 
+//Desafio
+export const registrarUsuario = async (username: string, password: string): Promise<{ id: number; username: string }> => {
+  const response = await fetch(`${API_URL}/api/usuarios`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ username, password })
+  });
+  return procesarRespuesta(response);
+};
+
 // 9: Agrega el header Authorization con el token de la sesión.
 // El formato es: Authorization: Bearer <token>
 export const encabezadosConToken = (): Record<string, string> => {

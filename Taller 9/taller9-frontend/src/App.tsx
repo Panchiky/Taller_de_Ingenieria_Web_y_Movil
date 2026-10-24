@@ -2,6 +2,7 @@ import { Navigate, Route } from 'react-router-dom';
 import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import LoginPage from './pages/LoginPage';
+import RegistroPage from './pages/RegistroPage';
 import PublicacionesPage from './pages/PublicacionesPage';
 // 10: Importar obtenerSesion desde './services/sesion'.
 import { obtenerSesion } from './services/sesion';
@@ -48,6 +49,8 @@ const App: React.FC = () => (
     <IonReactRouter>
       <IonRouterOutlet>
         <Route path="/login" element={<LoginPage />} />
+        {/* Desafio */}
+        <Route path="/registro" element={<RegistroPage />} />
         {/* 10: Proteger esta ruta envolviendo la página con RutaProtegida. */}
         <Route path="/publicaciones" element={<RutaProtegida><PublicacionesPage /></RutaProtegida>} />
         <Route path="/" element={<Navigate to="/publicaciones" replace />} />

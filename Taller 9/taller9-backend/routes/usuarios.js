@@ -39,4 +39,27 @@ router.get("/yo", verificarToken, (req, res) => {
   res.json({ id: usuario.id, username: usuario.username });
 });
 
+// Desafiio
+router.put("/yo/password", verificarToken, async (req, res) => {
+  const datos = req.body;
+  if (!datos || !datos.passwordActual || !datos.passwordNueva) {
+    return res.status(400).json({ error: "Debes enviar passwordActual y passwordNueva" });
+  }
+  if (datos.passwordNueva.length < 8) {
+    return res.status(400).json({ error: "La contraseña debe tener al menos 8 caracteres" });
+  }
+
+  const usuario = usuarios.find((u) => u.id === req.usuario.id);
+  if (!usuario) {
+    return res.status(404).json({ error: "Usuario no encontrado" });
+  }
+
+  const passwordCorrecta = await bcrypt.compare(datos.passwordActual, usuario.passwordHash);
+  if (!passwordCorrecta) {
+    return res.status(401).json({ error: "La contraseña actual es incorrecta" });
+  }
+
+  usuario.passwordHash = await bcrypt.hash(datos.passwordNueva, 10);
+  res.json({ mensaje: "Contraseña actualizada" });
+});
 module.exports = router;

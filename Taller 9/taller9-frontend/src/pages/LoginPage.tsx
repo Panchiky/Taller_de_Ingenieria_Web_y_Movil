@@ -89,6 +89,9 @@ const LoginPage: React.FC = () => {
           <IonButton type="submit" expand="block" disabled={enviando}>
             Ingresar
           </IonButton>
+          <IonButton type="button" expand="block" fill="clear" onClick={() => router.push("/registro")}>
+            ¿No tienes cuenta? Regístrate
+          </IonButton>
         </form>
       </IonContent>
     </IonPage>
