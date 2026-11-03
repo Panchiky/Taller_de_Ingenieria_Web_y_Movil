@@ -34,7 +34,7 @@ router.get("/yo", verificarToken, (req, res) => {
   if (!usuario) {
     return res.status(404).json({ error: "Usuario no encontrado" });
   }
-  res.json({ id: usuario.id, username: usuario.username });
+  res.json({ id: usuario.id, username: usuario.username, avatarUrl: usuario.avatarUrl || null });
 });
 
 module.exports = router;

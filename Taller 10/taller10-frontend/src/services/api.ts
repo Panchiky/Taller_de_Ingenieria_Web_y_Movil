@@ -92,7 +92,7 @@ export const iniciarSesionConGithub = async (code: string, state: string): Promi
 };
 
 // GET /api/usuarios/yo (ruta protegida)
-export const obtenerPerfil = async (): Promise<{ id: number; username: string }> => {
+export const obtenerPerfil = async (): Promise<{ id: number; username: string; avatarUrl: string | null }> => {
   const response = await fetch(`${API_URL}/api/usuarios/yo`, { headers: encabezadosConToken() });
   return procesarRespuesta(response);
 };

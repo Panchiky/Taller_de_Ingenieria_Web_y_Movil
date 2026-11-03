@@ -12,6 +12,15 @@ const router = express.Router();
 const estados = new Map();
 const DIEZ_MINUTOS = 10 * 60 * 1000;
 
+setInterval(() => {
+  const ahora = Date.now();
+  for (const [state, { expira }] of estados) {
+    if (expira < ahora) {
+      estados.delete(state);
+    }
+  }
+}, UN_MINUTO).unref();
+
 // Elige un nombre de usuario que no exista (ya está listo).
 // Si "ana" ya existe, prueba "ana-github", luego "ana-github2", etc.
 const nombreDisponible = (login) => {
@@ -92,16 +101,19 @@ router.post("/github", async (req, res) => {
   }
   const perfil = await respuestaPerfil.json();
 
+
+
   // 4. Buscar el usuario local por su githubId; si no existe, crearlo (sin contraseña).
   let usuario = usuarios.find((u) => u.githubId === perfil.id);
   if (!usuario) {
     usuario = {
       id: Math.max(...usuarios.map((u) => u.id)) + 1,
       username: nombreDisponible(perfil.login),
-      githubId: perfil.id
+      githubId: perfil.id,
+      avatarUrl: perfil.avatar_url //Desafio
     };
     usuarios.push(usuario);
-  }
+  } 
 
   // 5. Emitir NUESTRO JWT, igual que en routes/login.js.
   const token = jwt.sign(

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
+  IonAvatar,
   IonButton,
   IonButtons,
   IonContent,
@@ -55,6 +56,7 @@ const mensajeDeError = (error: unknown) => (error instanceof Error ? error.messa
 
 const PublicacionesPage: React.FC = () => {
   const [sesion, setSesion] = useState(obtenerSesion());
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [publicaciones, setPublicaciones] = useState<Publicacion[]>([]);
   const [filtro, setFiltro] = useState("todas");
   const [cargando, setCargando] = useState(true);
@@ -75,6 +77,7 @@ const PublicacionesPage: React.FC = () => {
   const salir = () => {
     cerrarSesion();
     setSesion(null);
+    setAvatarUrl(null);
     setModalAbierto(false);
     router.push("/login", "root", "replace");
   };
@@ -117,7 +120,11 @@ const PublicacionesPage: React.FC = () => {
     setSesion(actual);
     cargar();
     if (actual) {
-      obtenerPerfil().catch(manejarError);
+      obtenerPerfil()
+      .then((perfil) => setAvatarUrl(perfil.avatarUrl))
+      .catch(manejarError);
+    } else {
+      setAvatarUrl(null);
     }
   });
 
@@ -193,6 +200,11 @@ const PublicacionesPage: React.FC = () => {
           <IonButtons slot="end">
             {sesion ? (
               <>
+                {avatarUrl && (
+                  <IonAvatar className="avatar-usuario">
+                    <img src={avatarUrl} alt={`Foto de perfil de ${sesion.username}`} />
+                  </IonAvatar>
+                )}
                 <span className="usuario">{sesion.username}</span>
                 <IonButton onClick={salir}>Salir</IonButton>
               </>

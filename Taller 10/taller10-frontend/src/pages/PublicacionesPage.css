@@ -34,3 +34,10 @@
   font-size: 0.9rem;
   color: var(--ion-color-step-600, #666666);
 }
+
+
+.avatar-usuario {
+  width: 32px;
+  height: 32px;
+  margin-left: 8px;
+}
