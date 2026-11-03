@@ -74,14 +74,21 @@ export const encabezadosConToken = (): Record<string, string> => {
 // 5: GET /api/auth/github/url
 // Pide al servidor la URL de autorización de GitHub. El servidor responde { url }.
 export const obtenerUrlGithub = async (): Promise<string> => {
-  throw new Error("Paso 5 pendiente: completa obtenerUrlGithub en src/services/api.ts");
+  const response = await fetch(`${API_URL}/api/auth/github/url`);
+  const datos = await procesarRespuesta(response);
+  return datos.url;
 };
 
 // 5: POST /api/auth/github
 // Envía el code y el state que entregó GitHub, y devuelve la sesión ({ token, id, username }).
 // Pista: es muy parecida a iniciarSesion.
 export const iniciarSesionConGithub = async (code: string, state: string): Promise<Sesion> => {
-  throw new Error("Paso 5 pendiente: completa iniciarSesionConGithub en src/services/api.ts");
+  const response = await fetch(`${API_URL}/api/auth/github`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ code, state })
+  });
+  return procesarRespuesta(response);
 };
 
 // GET /api/usuarios/yo (ruta protegida)

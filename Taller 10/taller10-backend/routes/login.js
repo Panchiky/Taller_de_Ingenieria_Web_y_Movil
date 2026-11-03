@@ -16,7 +16,8 @@ router.post("/", async (req, res) => {
   const usuario = usuarios.find((u) => u.username === datos.username);
   // 2: Los usuarios que ingresan con GitHub no tienen passwordHash: la contraseña
   //    solo debe compararse si el usuario existe Y tiene passwordHash.
-  const passwordCorrecta = usuario ? await bcrypt.compare(datos.password, usuario.passwordHash) : false;
+    const passwordCorrecta =
+    usuario && usuario.passwordHash ? await bcrypt.compare(datos.password, usuario.passwordHash) : false;
 
   if (!passwordCorrecta) {
     return res.status(401).json({ error: "Usuario o contraseña incorrectos" });

@@ -3,8 +3,11 @@
 // y completa cada sección marcada con un número.
 
 // 1: Reemplazar esta verificación por una que revise también las variables de GitHub.
-if (!process.env.JWT_SECRET) {
-  console.error("Falta la variable de entorno JWT_SECRET. Revisa el archivo .env");
+const variablesRequeridas = ["JWT_SECRET", "GITHUB_CLIENT_ID", "GITHUB_CLIENT_SECRET", "GITHUB_REDIRECT_URI"];
+const faltantes = variablesRequeridas.filter((nombre) => !process.env[nombre]);
+
+if (faltantes.length > 0) {
+  console.error(`Faltan variables de entorno: ${faltantes.join(", ")}. Revisa el archivo .env`);
   process.exit(1);
 }
 
@@ -15,12 +18,13 @@ const postsRouter = require("./routes/posts");
 const usuariosRouter = require("./routes/usuarios");
 const loginRouter = require("./routes/login");
 // 3: Importar el router de autenticación con GitHub.
-
+const authRouter = require("./routes/auth");
 const app = express();
 
 app.use(morgan("tiny"));
 app.use(cors());
 app.use(express.json());
+app.use("/api/auth", authRouter);
 
 app.get("/", (req, res) => {
   res.send("¡Hola desde mi primer servidor con Express!");

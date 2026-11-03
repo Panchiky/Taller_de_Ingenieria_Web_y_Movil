@@ -29,7 +29,12 @@ interface ParametrosGithub {
 // 6: Lee los parámetros code, state y error de la URL actual.
 // Pista: new URLSearchParams(window.location.search) permite leer cada parámetro con .get("nombre").
 const leerParametros = (): ParametrosGithub => {
-  return { code: null, state: null, error: null };
+  const parametros = new URLSearchParams(window.location.search);
+  return {
+    code: parametros.get("code"),
+    state: parametros.get("state"),
+    error: parametros.get("error")
+  };
 };
 
 const GithubCallbackPage: React.FC = () => {
