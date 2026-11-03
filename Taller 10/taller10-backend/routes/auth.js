@@ -11,7 +11,9 @@ const router = express.Router();
 // Clave: state → Valor: { codeVerifier, expira }
 const estados = new Map();
 const DIEZ_MINUTOS = 10 * 60 * 1000;
+const UN_MINUTO = 60 * 1000;
 
+// Limpieza periódica...
 setInterval(() => {
   const ahora = Date.now();
   for (const [state, { expira }] of estados) {
