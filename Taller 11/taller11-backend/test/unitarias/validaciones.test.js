@@ -10,11 +10,17 @@ describe("validarPublicacion", () => {
   });
 
   // 2: Completa esta prueba.
-  test.todo("rechaza una publicación sin title");
+  test("rechaza una publicación sin title", () => {
+    assert.equal(validarPublicacion({ body: "Mundo" }), "Debes enviar title y body");
+  });
 
   // 2: Completa esta prueba.
-  test.todo("rechaza un title vacío");
+  test("rechaza un title vacío", () => {
+    assert.equal(validarPublicacion({ title: "", body: "Mundo" }), "Debes enviar title y body");
+  });
 
-  // 2: Completa esta prueba.
-  test.todo("rechaza cuando no se envían datos");
+  // 2: Completa esta prueba.  
+  test("rechaza cuando no se envían datos", () => {
+    assert.equal(validarPublicacion(undefined), "Debes enviar title y body");
+  });
 });

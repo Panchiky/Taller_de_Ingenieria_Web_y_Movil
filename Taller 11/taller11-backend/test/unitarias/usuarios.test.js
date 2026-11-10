@@ -11,11 +11,22 @@ describe("nombreDisponible", () => {
   });
 
   // 2: Completa esta prueba.
-  test.todo("agrega -github si el nombre ya existe");
+  test("agrega -github si el nombre ya existe", () => {
+    const usuarios = [{ username: "ana" }];
+    assert.equal(nombreDisponible("ana", usuarios), "ana-github");
+  });
 
   // 2: Completa esta prueba.
-  test.todo("agrega -github2 si también existe ana-github");
+  test("agrega -github2 si también existe ana-github", () => {
+    const usuarios = [{ username: "ana" }, { username: "ana-github" }];
+    assert.equal(nombreDisponible("ana", usuarios), "ana-github2");
+  });
 
   // 2: Completa esta prueba.
-  test.todo("no modifica la lista de usuarios");
+  test("no modifica la lista de usuarios", () => {
+    const usuarios = [{ username: "ana" }];
+    nombreDisponible("ana", usuarios);
+    assert.deepEqual(usuarios, [{ username: "ana" }]);
+  });
 });
+
