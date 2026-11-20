@@ -13,8 +13,23 @@ describe('Inicio de sesión', () => {
   })
 
   // 6: Completa esta prueba (una prueba sin función queda pendiente).
-  it('no inicia sesión si la contraseña es incorrecta')
+  it('no inicia sesión si la contraseña es incorrecta', () => {
+    cy.visit('/login')
+    cy.get('input[autocomplete="username"]').type('ana')
+    cy.get('input[type="password"]').type('clave-incorrecta')
+    cy.get('ion-button[type="submit"]').click()
+
+    cy.url().should('include', '/login')
+    cy.window().its('localStorage').invoke('getItem', 'taller9-sesion').should('be.null')
+  })
 
   // 6: Completa esta prueba (una prueba sin función queda pendiente).
-  it('cierra la sesión con el botón Salir')
+  it('cierra la sesión con el botón Salir', () => {
+    cy.visitarConSesion('/publicaciones', 'ana', 'ana-12345')
+
+    cy.contains('ion-button', 'Salir').click()
+
+    cy.url().should('include', '/login')
+    cy.window().its('localStorage').invoke('getItem', 'taller9-sesion').should('be.null')
+  })
 })

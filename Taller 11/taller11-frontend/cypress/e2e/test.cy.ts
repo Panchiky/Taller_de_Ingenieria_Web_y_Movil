@@ -1,6 +1,7 @@
-describe('Taller 10', () => {
-  it('Muestra la página de publicaciones', () => {
+describe('Taller 11', () => {
+  it('Redirige al inicio de sesión si no hay sesión', () => {
     cy.visit('/')
-    cy.contains('Publicaciones')
+    cy.url().should('include', '/login')
+    cy.contains('Iniciar sesión')
   })
 })
